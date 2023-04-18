@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import ru.skillbox.diplom.group35.library.core.annotation.EnableBaseRepository;
+import ru.skillbox.diplom.group35.library.core.annotation.EnableOpenFeign;
 import ru.skillbox.diplom.group35.library.core.annotation.EnableSecurity;
 import ru.skillbox.diplom.group35.microservice.authorization.impl.service.CaptchaService;
 
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 @EnableCaching
 @EnableSecurity
+@EnableOpenFeign
 @EnableBaseRepository
 @SpringBootApplication
 public class Application {

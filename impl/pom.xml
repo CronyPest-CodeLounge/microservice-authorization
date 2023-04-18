@@ -38,7 +38,11 @@
             <artifactId>microservice-authorization-domain</artifactId>
             <version>${revision}${sha1}${changelist}</version>
         </dependency>
-
+        <dependency>
+            <groupId>ru.skillbox.diplom.group35</groupId>
+            <artifactId>microservice-account-api</artifactId>
+            <version>${revision}${sha1}${changelist}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
