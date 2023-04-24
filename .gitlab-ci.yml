@@ -8,7 +8,7 @@ stages:
 build:
   stage: build
   only:
-    - ci-test
+    - develop
   script:
     - mvn -s maven-settings.xml clean package
   artifacts:
@@ -19,7 +19,7 @@ docker-deploy:
   image: docker:latest
   stage: docker_deploy
   only:
-    - ci-test
+    - develop
   variables:
     TAG: latest
   before_script:
@@ -32,7 +32,7 @@ docker-deploy:
 deploy_prod:
   stage: deploy_prod
   only:
-    - ci-test
+    - develop
   except:
     - tags
   before_script:
