@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.skillbox.diplom.group35.library.core.utils.TechnicalUserConfig;
 import ru.skillbox.diplom.group35.microservice.account.api.client.AccountFeignClient;
 import ru.skillbox.diplom.group35.microservice.account.api.dto.AccountDto;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.RegistrationDto;
@@ -22,14 +23,10 @@ import java.time.ZonedDateTime;
 public class RegistrationService {
 
     private final RegistrationMapper registrationMapper;
-
     private final AccountFeignClient accountFeignClient;
-
-    @Autowired
-    private CaptchaService captchaService;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CaptchaService captchaService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final TechnicalUserConfig technicalUserConfig;
 
     public void create(RegistrationDto dto) {
         AccountDto accountDto = registrationMapper.mapToAccount(dto);
@@ -41,7 +38,7 @@ public class RegistrationService {
         && captchaService.captchaValidation(dto)
         ){
             accountDto.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
-            accountFeignClient.create(accountDto);
+            technicalUserConfig.executeByTechnicalUser(()-> accountFeignClient.create(accountDto));
         }
     }
 }
