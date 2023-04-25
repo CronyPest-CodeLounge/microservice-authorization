@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skillbox.diplom.group35.library.core.utils.TechnicalUserConfig;
+import ru.skillbox.diplom.group35.library.core.security.config.TechnicalUserConfig;
 import ru.skillbox.diplom.group35.microservice.account.api.client.AccountFeignClient;
 import ru.skillbox.diplom.group35.microservice.account.api.dto.AccountDto;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.RegistrationDto;
