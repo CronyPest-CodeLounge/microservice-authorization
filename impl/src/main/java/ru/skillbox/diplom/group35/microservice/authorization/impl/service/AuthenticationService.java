@@ -1,5 +1,7 @@
 package ru.skillbox.diplom.group35.microservice.authorization.impl.service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class AuthenticationService {
 
 
 
-    public AuthenticateResponseDto getAuthenticationResponse(AuthenticateDto authenticateDto) throws UnauthorizedException {
+    public AuthenticateResponseDto getAuthenticationResponse(AuthenticateDto authenticateDto, HttpServletResponse response) throws UnauthorizedException {
         AuthenticateResponseDto authenticateResponseDto = new AuthenticateResponseDto();
         ResponseEntity<AccountDto> responseEntity = technicalUserConfig.executeByTechnicalUser(()->accountFeignClient.getByEmail(authenticateDto.getEmail()));
         AccountDto accountDto = responseEntity.getBody();
@@ -40,11 +42,19 @@ public class AuthenticationService {
             String jwtToken = jwtTokenProvider.createToken(accountDto.getId(), accountDto.getEmail());
             authenticateResponseDto.setAccessToken(jwtToken);
             authenticateResponseDto.setRefreshToken(jwtToken);
+            response.addCookie(createCookie(jwtToken));
         }
         else {
             throw new UnauthorizedException("Incorrect email or password");
         }
 
         return authenticateResponseDto;
+    }
+
+    private Cookie createCookie(String jwtToken) {
+        Cookie cookie = new Cookie("jwt", jwtToken);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        return cookie;
     }
 }
