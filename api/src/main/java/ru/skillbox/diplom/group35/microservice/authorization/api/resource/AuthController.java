@@ -1,5 +1,6 @@
 package ru.skillbox.diplom.group35.microservice.authorization.api.resource;
 
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public interface AuthController {
     ResponseEntity<RegistrationDto> newPassword(String linkId);
 
     @PostMapping("/login")
-    ResponseEntity<AuthenticateResponseDto> login(AuthenticateDto authenticateDto);
+    ResponseEntity<AuthenticateResponseDto> login(AuthenticateDto authenticateDto, HttpServletResponse response);
 
     @GetMapping("/captcha")
     ResponseEntity<CaptchaDto> captcha();
