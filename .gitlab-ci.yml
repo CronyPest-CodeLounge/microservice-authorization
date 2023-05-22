@@ -19,7 +19,7 @@ docker-deploy:
   image: docker:latest
   stage: docker_deploy
   only:
-    - develop
+    - ci-test
   variables:
     TAG: latest
   before_script:
@@ -32,7 +32,7 @@ docker-deploy:
 deploy_prod:
   stage: deploy_prod
   only:
-    - develop
+    - ci-test
   except:
     - tags
   before_script:
