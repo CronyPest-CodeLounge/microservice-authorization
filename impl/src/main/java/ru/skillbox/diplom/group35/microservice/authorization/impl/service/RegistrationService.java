@@ -1,7 +1,6 @@
 package ru.skillbox.diplom.group35.microservice.authorization.impl.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.diplom.group35.library.core.security.config.TechnicalUserConfig;

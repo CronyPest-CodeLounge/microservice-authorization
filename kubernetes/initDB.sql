@@ -2,6 +2,6 @@ create
 user "authorization";
 alter
 user "authorization" with PASSWORD 'authorization';
-create schema "authorization";
+create schema "auth";
 alter
-schema "authorization" owner to "authorization";
+schema "auth" owner to "authorization";

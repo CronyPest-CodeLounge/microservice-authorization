@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import ru.skillbox.diplom.group35.library.core.annotation.EnableBaseRepository;
 import ru.skillbox.diplom.group35.library.core.annotation.EnableOpenFeign;
 import ru.skillbox.diplom.group35.library.core.annotation.EnableSecurity;
+import ru.skillbox.diplom.group35.library.core.annotation.JwtProvider;
 import ru.skillbox.diplom.group35.microservice.authorization.impl.service.CaptchaService;
 
 import javax.imageio.ImageIO;
