@@ -54,7 +54,6 @@ public class AuthControllerImpl implements AuthController {
     @Override
     public ResponseEntity<AuthenticateResponseDto> login(@RequestBody AuthenticateDto authenticateDto, HttpServletResponse response) {
         log.info("Get authentication by email, Email:{}", authenticateDto.getEmail());
-        log.info("Get authentication by password, Password:{}", authenticateDto.getPassword());
         return ResponseEntity.ok(authenticationService.getAuthenticationResponse(authenticateDto, response));
     }
 

@@ -11,7 +11,6 @@ import ru.skillbox.diplom.group35.library.core.exception.UnauthorizedException;
 import ru.skillbox.diplom.group35.library.core.security.config.TechnicalUserConfig;
 import ru.skillbox.diplom.group35.library.core.security.jwt.JwtTokenProvider;
 import ru.skillbox.diplom.group35.microservice.account.api.client.AccountFeignClient;
-import ru.skillbox.diplom.group35.microservice.account.api.dto.AccountDto;
 import ru.skillbox.diplom.group35.microservice.account.api.dto.AccountSecureDto;
 import ru.skillbox.diplom.group35.microservice.account.domain.model.Role;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateDto;
@@ -53,13 +52,11 @@ public class AuthenticationService {
         else {
             throw new UnauthorizedException("Incorrect email or password");
         }
-
         return authenticateResponseDto;
     }
 
     private Cookie createCookie(String jwtToken) {
         Cookie cookie = new Cookie("jwt", jwtToken);
-        cookie.setSecure(true);
         cookie.setHttpOnly(true);
         return cookie;
     }
