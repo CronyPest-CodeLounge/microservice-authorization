@@ -1,7 +1,5 @@
 package ru.skillbox.diplom.group35.microservice.authorization.impl.service;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +14,8 @@ import ru.skillbox.diplom.group35.microservice.account.domain.model.Role;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateDto;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateResponseDto;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,11 +52,12 @@ public class AuthenticationService {
         else {
             throw new UnauthorizedException("Incorrect email or password");
         }
+
         return authenticateResponseDto;
     }
 
     private Cookie createCookie(String jwtToken) {
-        Cookie cookie = new Cookie("jwt", jwtToken);
+        Cookie cookie = new Cookie("jwtPath", jwtToken);
         cookie.setHttpOnly(true);
         return cookie;
     }
