@@ -1,6 +1,5 @@
 package ru.skillbox.diplom.group35.microservice.authorization.impl.resource;
 
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -52,9 +51,9 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
-    public ResponseEntity<AuthenticateResponseDto> login(@RequestBody AuthenticateDto authenticateDto, HttpServletResponse response) {
+    public ResponseEntity<AuthenticateResponseDto> login(@RequestBody AuthenticateDto authenticateDto) {
         log.info("Get authentication by email, Email:{}", authenticateDto.getEmail());
-        return ResponseEntity.ok(authenticationService.getAuthenticationResponse(authenticateDto, response));
+        return ResponseEntity.ok(authenticationService.getAuthenticationResponse(authenticateDto));
     }
 
     @Override
