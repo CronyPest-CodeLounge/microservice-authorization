@@ -14,8 +14,6 @@ import ru.skillbox.diplom.group35.microservice.account.domain.model.Role;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateDto;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateResponseDto;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +28,7 @@ public class AuthenticationService {
 
 
 
-    public AuthenticateResponseDto getAuthenticationResponse(AuthenticateDto authenticateDto, HttpServletResponse response) throws UnauthorizedException {
+    public AuthenticateResponseDto getAuthenticationResponse(AuthenticateDto authenticateDto) throws UnauthorizedException {
         AuthenticateResponseDto authenticateResponseDto = new AuthenticateResponseDto();
         ResponseEntity<AccountSecureDto> responseEntity = technicalUserConfig.executeByTechnicalUser(
                 ()->accountFeignClient.getByEmail(authenticateDto.getEmail()));
@@ -47,18 +45,10 @@ public class AuthenticationService {
                    roles);
             authenticateResponseDto.setAccessToken(jwtToken);
             authenticateResponseDto.setRefreshToken(jwtToken);
-            response.addCookie(createCookie(jwtToken));
         }
         else {
             throw new UnauthorizedException("Incorrect email or password");
         }
-
         return authenticateResponseDto;
-    }
-
-    private Cookie createCookie(String jwtToken) {
-        Cookie cookie = new Cookie("jwtPath", jwtToken);
-        cookie.setHttpOnly(true);
-        return cookie;
     }
 }
