@@ -10,6 +10,7 @@ import ru.skillbox.diplom.group35.library.core.security.config.TechnicalUserConf
 import ru.skillbox.diplom.group35.library.core.security.jwt.JwtTokenProvider;
 import ru.skillbox.diplom.group35.microservice.account.api.client.AccountFeignClient;
 import ru.skillbox.diplom.group35.microservice.account.api.dto.AccountSecureDto;
+import ru.skillbox.diplom.group35.microservice.account.domain.model.Authority;
 import ru.skillbox.diplom.group35.microservice.account.domain.model.Role;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateDto;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateResponseDto;
@@ -39,6 +40,11 @@ public class AuthenticationService {
                     .stream()
                     .map(Role::getRole)
                     .collect(Collectors.toList());
+            List<String> authorities =  accountSecureDto.getAuthorities()
+                    .stream()
+                    .map(Authority::getAuthority)
+                    .collect(Collectors.toList());
+            roles.addAll(authorities);
             String jwtToken = jwtTokenProvider.createToken(
                     accountSecureDto.getId(),
                     accountSecureDto.getEmail(),
