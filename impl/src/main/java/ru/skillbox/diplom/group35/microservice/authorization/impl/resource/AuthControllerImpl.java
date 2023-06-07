@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.diplom.group35.library.core.annotation.EnableExceptionHandler;
-import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateDto;
-import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateResponseDto;
-import ru.skillbox.diplom.group35.microservice.authorization.api.dto.CaptchaDto;
-import ru.skillbox.diplom.group35.microservice.authorization.api.dto.RegistrationDto;
+import ru.skillbox.diplom.group35.microservice.authorization.api.dto.*;
 import ru.skillbox.diplom.group35.microservice.authorization.api.resource.AuthController;
 import ru.skillbox.diplom.group35.microservice.authorization.impl.service.AuthenticationService;
 import ru.skillbox.diplom.group35.microservice.authorization.impl.service.CaptchaService;
@@ -60,5 +57,11 @@ public class AuthControllerImpl implements AuthController {
     public ResponseEntity<CaptchaDto> captcha() {
         log.info("Getting captcha");
         return ResponseEntity.ok(captchaService.getCaptcha());
+    }
+
+    @Override
+    public ResponseEntity<AuthenticateResponseDto> refresh(@RequestBody AuthenticateResponseDto refreshToken) {
+        log.info("refresh token");
+        return ResponseEntity.ok(authenticationService.refreshToken(refreshToken.getRefreshToken()));
     }
 }
