@@ -2,6 +2,7 @@ package ru.skillbox.diplom.group35.microservice.authorization.impl.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.diplom.group35.library.core.annotation.JwtProvider;
@@ -16,7 +17,9 @@ import ru.skillbox.diplom.group35.microservice.account.domain.model.Authority;
 import ru.skillbox.diplom.group35.microservice.account.domain.model.Role;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateDto;
 import ru.skillbox.diplom.group35.microservice.authorization.api.dto.AuthenticateResponseDto;
+import ru.skillbox.diplom.group35.microservice.authorization.api.dto.KafkaDto;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,11 +34,14 @@ public class AuthenticationService {
     private final TechnicalUserConfig technicalUserConfig;
     private final  SecurityConfig securityConfig;
     private final SecurityUtil securityUtil;
+    private final KafkaProducerService kafkaProducerService;
+
 
 
 
     public AuthenticateResponseDto getAuthenticationResponse(AuthenticateDto authenticateDto) throws UnauthorizedException {
         AuthenticateResponseDto authenticateResponseDto = new AuthenticateResponseDto();
+        KafkaDto kafkaDto = new KafkaDto(authenticateDto.getEmail(), ZonedDateTime.now());
         ResponseEntity<AccountSecureDto> responseEntity = technicalUserConfig.executeByTechnicalUser(
                 ()->accountFeignClient.getByEmail(authenticateDto.getEmail()));
         AccountSecureDto accountSecureDto = responseEntity.getBody();
@@ -57,9 +63,15 @@ public class AuthenticationService {
             String refreshJwtToken = jwtTokenProvider.refreshToken(accountSecureDto.getId(), accountSecureDto.getEmail());
             authenticateResponseDto.setAccessToken(jwtToken);
             authenticateResponseDto.setRefreshToken(refreshJwtToken);
+            kafkaDto.setSuccessful(true);
+            kafkaProducerService.sendAuthentication(kafkaDto);
         }
         else {
-            throw new UnauthorizedException("Incorrect email or password");
+            String errorMessage = "Incorrect email or password";
+            kafkaDto.setSuccessful(false);
+            kafkaDto.setError(errorMessage);
+            kafkaProducerService.sendAuthentication(kafkaDto);
+            throw new UnauthorizedException(errorMessage);
         }
         return authenticateResponseDto;
     }
