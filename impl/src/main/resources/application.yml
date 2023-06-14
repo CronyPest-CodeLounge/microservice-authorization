@@ -23,3 +23,14 @@ spring:
         format_sql: true
         default_schema: ${DB_SCHEMA:account}
     open-in-view: false
+
+kafka:
+  bootstrap-servers: 82.202.214.42:9094
+  producer:
+    retries: 3
+  topic:
+    partition-count: 3
+    replication-factor: 1
+    login: topic.login
+    registration: topic.registration
+
